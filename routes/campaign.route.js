@@ -13,6 +13,7 @@ const router = express.Router();
 
 router.post("/create", createCampaign);
 router.post("/preview", previewCampaign);
+router.post("/ai",parseNaturalLanguageByGemini)
 router.get("/", getAllCampaigns);
 router.get("/:id", getCampaignById);
 router.put("/:id", updateCampaign);

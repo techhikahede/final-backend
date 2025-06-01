@@ -15,6 +15,8 @@ const buildMongoQueryFromRules = (rules = []) => {
   for (const rule of rules) {
     const { field, operator, value } = rule;
 
+    console.log(field, operator,typeof value);
+
     switch (operator) {
       case "equals":
         query[field] = value;
@@ -25,7 +27,13 @@ const buildMongoQueryFromRules = (rules = []) => {
       case "greater_than":
         query[field] = { $gt: value };
         break;
+      case "greater_than_equals":
+        query[field] = { $gt: value };
+        break;
       case "less_than":
+        query[field] = { $lt: value };
+        break;
+      case "less_than_equals":
         query[field] = { $lt: value };
         break;
       case "contains":
@@ -273,18 +281,18 @@ export const parseNaturalLanguageByGemini = async (req, res) => {
       Each rule should follow this format:
       {
         "field": string,         // the name of the field to filter (e.g. "age", "gender", "city", "totalSpent")
-        "operator": string,      // one of: "equals", "notEquals", "greaterThan", "lessThan", "includes", "in", "between"
-        "value": any             // the value or range to compare
+        "operator": string,      // one of: "equals", "not_equals", "greater_than", "less_than", "contains", "in", "between"
+        "value": any             // the value or range to compare, if its a date, generate date in format yyyy-mm--dd
       }
 
-      Supported fields include: "age", "gender", "city", "state", "totalSpent", "visits", "lastPurchaseDate", "email", "phone"
+      Supported fields include:   "totalSpent", "visits", "lastOrderDate", "email", "name"  speeling must be same
 
-      Supported operators:
+      Supported operators: spelling must be same,
       - "equals" (e.g., gender equals female)
-      - "notEquals" (e.g., city notEquals Mumbai)
-      - "greaterThan" / "lessThan" (e.g., age greaterThan 25)
+      - "not_equals" (e.g., city notEquals Mumbai)
+      - "greater_than" / "less_than" (e.g., age greaterThan 25)
       - "in" (e.g., city in ["Delhi", "Mumbai"])
-      - "includes" (for arrays or strings)
+      - "contains" / "not_contains" (for arrays or strings)
       - "between" (for ranges, e.g., age between 20 and 30)
 
       input : ${userInput}
