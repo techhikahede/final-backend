@@ -37,7 +37,7 @@ const campaignSchema = new mongoose.Schema({
   },
   startDate: {
     type: Date,
-    required: true,
+    required: false,
   },
   endDate: {
     type: Date,
@@ -47,6 +47,7 @@ const campaignSchema = new mongoose.Schema({
       },
       message: "End date must be after start date",
     },
+    required : false
   },
   targetingRules: {
     type: [ruleSchema],
